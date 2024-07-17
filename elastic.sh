@@ -3,12 +3,17 @@
 echo "--------------------------------------------------------------------------------"
 echo 
 
-sed -i 's/ENCUT  =  500/ENCUT  =  620/g' INCAR
-sed -i 's/IBRION =  2/IBRION =  6/g' INCAR
-sed -i 's/KPAR/#KPAR/g' INCAR
+read -p 'Number of processing core of your system: ' np
+
+mkdir elastic
+cd elastic
+cp -r ../relax/* ./
+sed -i '/LWAVE/c\LWAVE = .FALSE.' INCAR
+sed -i '/ENCUT/c\ENCUT =  620' INCAR
+sed -i '/IBRION/c\IBRION =  6' INCAR
 sed -i 's/NCORE/#NCORE/g' INCAR
 
 #### Runing VASP ####
-nohup mpirun -np 20 vasp_std
+nohup mpirun -np 80 vasp
 
 echo  -e  "203\n"  |  vaspkit  >> Elastic_Data.txt
