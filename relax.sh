@@ -1,11 +1,7 @@
 #!/bin/bash
 ### starting interface ###
 echo "--------------------------------------------------------------------------------"
-echo "------------------------------------Welcome-------------------------------------"
-echo "--------------------------------------------------------------------------------"
-echo "------------For any queries please contact 'Quazi Shafayat Hossain'-------------"
-echo 
-echo
+
 while true; do
     read -p "
 Please make sure there are only the 'POSCAR' and the 'relax.sh' files in this working directory.
