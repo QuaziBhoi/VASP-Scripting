@@ -14,7 +14,7 @@ read -r g h i < <(sed -n '5p' POSCAR)
 iteration=0
 #For each lattice parameter in the specified length
 #Generate a POSCAR file and run static calclation
-for (( j=75; j<=125; j+=5 )); 
+for (( j=75; j<=125; j+=5 )); # 75% to 125%
 do
 ((iteration++))
 
