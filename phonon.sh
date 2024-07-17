@@ -2,7 +2,7 @@
 ### starting interface ###
 echo "-----------------------------------------------------------------------------------------------"
 
-echo "Please make sure there are only 'POSCAR' and the 'relax.sh' files in this working directory"
+echo "Please make sure there are only 'POSCAR' and the 'phonon.sh' files in this working directory"
 # Check if POSCAR file exists
 if [[ ! -f "POSCAR" ]]; then
   echo "POSCAR file not found!"
