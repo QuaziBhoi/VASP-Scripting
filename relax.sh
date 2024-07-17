@@ -1,39 +1,44 @@
 #!/bin/bash
 ### starting interface ###
-echo "--------------------------------------------------------------------------------"
+echo "-----------------------------------------------------------------------------------------------"
 
-while true; do
-    read -p "
-Please make sure there are only the 'POSCAR' and the 'relax.sh' files in this working directory.
+echo "Please make sure there are only 'POSCAR' and the 'relax.sh' files in this working directory"
+# Check if POSCAR file exists
+if [[ ! -f "POSCAR" ]]; then
+  echo "POSCAR file not found!"
+  exit 1
+fi
 
-If the above mentioned conditions are not satisfied then please enter 'no' and modify your working directory and run this bash file again. If it is yes then enter 'yes' to continue: " yn
-echo
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
-
+### Getting input ###
 read -p 'Number of processing core of your system: ' np
 read -p 'Energy cutoff: ' ec
 
 
-## Setting VASP parameters ###
+### Setting VASP parameters ###
 echo  -e  "102\n1\n0.02\n"  |  vaspkit > vaspkit.txt
 
+### Setting MAGMOM to 0 for all atoms ### You can edit MAGMOM as required 
+IFS=' ' read -r -a counts <<< "$(sed -n '7p' POSCAR)"
+MAGMOM=""
+for count in "${counts[@]}"; do
+  MAGMOM+="$count*0 "
+done
+MAGMOM=${MAGMOM% }  # Remove trailing space
+echo $MAGMOM
+
+### Create INCAR ###
 cat >INCAR <<!
 Global Parameters
 ISTART =  1            (Read existing wavefunction; if there)
 ISPIN  =  2            (Non-Spin polarised DFT)
-MAGMOM = 8*2 4*2 4*2 24*2
-LREAL  = .FALSE.          (Projection operators: automatic)
+MAGMOM =  $MAGMOM      (Initial magnetic momentum)
+LREAL  = .FALSE.       (Projection operators: automatic)
 ENCUT  =  $ec          (Cut-off energy for plane wave basis set, in eV)
 PREC   =  A            (Precision level)
 LWAVE  = .TRUE.        (Write WAVECAR or not)
 LCHARG = .TRUE.        (Write CHGCAR or not)
 ADDGRID= .TRUE.        (Increase grid; helps GGA convergence)
-KPAR   = $(($np/4))            (Divides k-grid into separate groups)
+KPAR   = $(($np/4))    (Divides k-grid into separate groups)
 NCORE  = 8
  
 Electronic Relaxation
@@ -50,12 +55,15 @@ ISIF   =  3            (Stress/relaxation: 2-Ions, 3-Shape/Ions/V, 4-Shape/Ions)
 EDIFFG = -0.0001       (Ionic convergence; eV/AA)
 !
 
-#### Runing VASP ####
-nohup mpirun -np $np vasp
+### Run VASP until reaching required accuracy ###
+while true; do
 
-cp POSCAR POSCAR.old
-cp CONTCAR POSCAR
-cp INCAR INCAR.r
+    #### Runing VASP ####
+    nohup mpirun -np $np vasp
+
+    cp POSCAR POSCAR.old
+    cp CONTCAR POSCAR
+    cp INCAR INCAR.r
 
     # Check if the condition is met in the last two lines of nohup.out
     if tail -n 2 nohup.out | grep -q "reached required accuracy" || tail -n 2 nohup.out | grep -q "deleting file STOPCAR"; then
