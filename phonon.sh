@@ -138,4 +138,3 @@ ANIME = 2 5 20
 # 20 in number of images
 !
 phonopy -p anime.conf
-echo " Thanks for using the script. For any queries please contact 'Sadiq Shahriyar Nishat' "
