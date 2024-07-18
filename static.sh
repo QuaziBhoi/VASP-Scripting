@@ -1,12 +1,16 @@
 #!/bin/bash
-### starting interface ###
 echo "--------------------------------------------------------------------------------"
 echo
 
-# read -p 'Number of processing core of your system: ' np
+read -p 'Number of processing core of your system: ' np
+
+mkdir dos
+cd dos
+cp -r ../relax/* ./
 
 ### Creating INCAR File ###
-echo  -e  "101\nST\n"  |  vaspkit > vk.txt
+cp INCAR INCAR.r
+echo  -e  "101\nST\n"  |  vaspkit > vaspkit.txt
 cp INCAR INCAR.st
 
 if grep -q "IVDW" INCAR.r; then
