@@ -27,7 +27,7 @@ command to run if program contains helper info
 
 ## Authors
 
-Quazi Shafayat 
+Quazi
 <!--
 ex. [@DomPizzie](https://twitter.com/dompizzie)
 -->
