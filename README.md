@@ -1,6 +1,6 @@
 # VASP Scripting
 
-Bash scripting to automate vasp routines.
+Bash scripting to automate VASP routines.
 
 ## Getting Started
 
