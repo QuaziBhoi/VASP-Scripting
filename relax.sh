@@ -1,5 +1,8 @@
 #!/bin/bash
 
+### IMPORTANT ###
+# Edit as required - number of cores(80), ENCUT(500), MAGMOM(0), KPOINTS etc.
+
 ### INSTRUCTIONS ###
 # This script makes new directory "relax" and runs structural relaxation
 # Run this script using: bash relax.sh
@@ -7,17 +10,11 @@
 
 echo "-----------------------------------------------------------------------------------------------"
 
-echo "Please make sure there are only 'POSCAR' and the 'relax.sh' files in this working directory"
 # Check if POSCAR file exists
 if [[ ! -f "POSCAR" ]]; then
   echo "POSCAR file not found!"
   exit 1
-fi
-
-### Getting input ###
-read -p 'Number of processing core of your system: ' np
-read -p 'Energy cutoff: ' ec
-
+fi 
 
 ### Setting VASP parameters ###
 echo  -e  "102\n1\n0.02\n"  |  vaspkit > vaspkit.txt
@@ -38,7 +35,7 @@ ISTART =  1            (Read existing wavefunction; if there)
 ISPIN  =  2            (Non-Spin polarised DFT)
 MAGMOM =  $MAGMOM      (Initial magnetic momentum)
 LREAL  = .FALSE.       (Projection operators: automatic)
-ENCUT  =  $ec          (Cut-off energy for plane wave basis set, in eV)
+ENCUT  =  500          (Cut-off energy for plane wave basis set, in eV)
 PREC   =  A            (Precision level)
 LWAVE  = .TRUE.        (Write WAVECAR or not)
 LCHARG = .TRUE.        (Write CHGCAR or not)
@@ -76,5 +73,5 @@ while true; do
     fi
     
     # Add a delay before the next iteration (optional)
-    sleep 10  # Adjust the sleep duration as needed
+    sleep 60  # Adjust the sleep duration as needed
 done                        
