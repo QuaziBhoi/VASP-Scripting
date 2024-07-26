@@ -10,6 +10,10 @@
 
 echo "-----------------------------------------------------------------------------------------------"
 
+cd..
+mkdir relax
+cd relax
+mv ../POSCAR ./
 # Check if POSCAR file exists
 if [[ ! -f "POSCAR" ]]; then
   echo "POSCAR file not found!"
