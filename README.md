@@ -8,9 +8,11 @@ Bash scripting to automate VASP routines.
 
 * Create your working directory. Keep only POSCAR inside working directory 
 * Download all the scripts into your working directory under new folder "scripts"
+* Instructions for the script are written inside the script itself at the top
 
 ### Executing program
 
+* Go into the "scripts" folder under working directory
 * Always initiate tmux before running scripts
 * bash "filename.sh" - [e.g. bash relax.sh]
 ```
@@ -28,7 +30,7 @@ command to run if program contains helper info
 
 Quazi
 <!--
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+[@DomPizzie](https://twitter.com/dompizzie)
 -->
 
 
