@@ -1,9 +1,16 @@
 #!/bin/bash
-echo "--------------------------------------------------------------------------------"
-echo
 
-read -p 'Number of processing core of your system: ' np
+### IMPORTANT ###
+# Edit as required - number of cores(80), ENCUT(500), MAGMOM(0), KPOINTS etc.
 
+### INSTRUCTIONS ###
+# This script makes new directory "relax" and runs structural relaxation
+# Run this script using: bash relax.sh
+# You can edit INCAR and KPOINTS as required inside the script by manually editing
+
+echo "-----------------------------------------------------------------------------------------------"
+
+cd ..
 mkdir dos
 cd dos
 cp -r ../relax/* ./
