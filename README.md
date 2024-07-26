@@ -11,7 +11,6 @@ Bash scripting to automate VASP routines.
 
 ### Executing program
 
-* How to run the program
 * Always initiate tmux before running scripts
 * bash "filename.sh" - [e.g. bash relax.sh]
 ```
