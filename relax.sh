@@ -1,5 +1,10 @@
 #!/bin/bash
-### starting interface ###
+
+### INSTRUCTIONS ###
+# This script makes new directory "relax" and runs structural relaxation
+# Run this script using: bash relax.sh
+# You can edit INCAR and KPOINTS as required inside the script by manually editing
+
 echo "-----------------------------------------------------------------------------------------------"
 
 echo "Please make sure there are only 'POSCAR' and the 'relax.sh' files in this working directory"
