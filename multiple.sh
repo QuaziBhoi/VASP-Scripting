@@ -1,12 +1,11 @@
 #!/bin/bash
 
-###
-* This script runs multiple bash files sequentially
-* Run this script using:
-* bash multiple.sh [script names sequentially]
-* For example: 
-* bash multiple.sh relax static 
-###
+### INSTRUCTIONS ###
+# This script runs multiple bash files sequentially
+# Run this script using:
+# bash multiple.sh [script names sequentially]
+# For example: 
+# bash multiple.sh relax static 
 
 # Check if any arguments are provided
 if [ "$#" -eq 0 ]; then
