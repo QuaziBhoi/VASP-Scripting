@@ -7,6 +7,8 @@
 # For example: 
 # bash multiple.sh relax static 
 
+echo "-----------------------------------------------------------------------------------------------"
+
 # Check if any arguments are provided
 if [ "$#" -eq 0 ]; then
     echo "No script names provided."
