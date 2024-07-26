@@ -1,4 +1,4 @@
-# Project Title
+# VASP Scripting
 
 Bash scripting to automate vasp routines.
 
@@ -7,7 +7,7 @@ Bash scripting to automate vasp routines.
 ### Downloading
 
 * Create your working directory. Keep only POSCAR inside working directory 
-* Downlood all the scripts into your working directory under new folder "scripts"
+* Download all the scripts into your working directory under new folder "scripts"
 
 ### Executing program
 
