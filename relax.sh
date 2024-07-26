@@ -61,7 +61,7 @@ EDIFFG = -0.0001       (Ionic convergence; eV/AA)
 while true; do
 
     #### Runing VASP ####
-    nohup mpirun -np $np vasp
+    nohup mpirun -np 80 vasp
 
     cp POSCAR POSCAR.old
     cp CONTCAR POSCAR
