@@ -1,52 +1,46 @@
 # Project Title
 
-Simple overview of use/purpose.
-
-## Description
-
-An in-depth paragraph about your project and overview of use.
+Bash scripting to automate vasp routines.
 
 ## Getting Started
 
-### Dependencies
+### Downloading
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
-
-### Installing
-
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Create your working directory. Keep only POSCAR inside working directory 
+* Downlood all the scripts into your working directory under new folder "scripts"
 
 ### Executing program
 
 * How to run the program
-* Step-by-step bullets
+* Always initiate tmux before running scripts
+* bash "filename.sh" - [e.g. bash relax.sh]
 ```
-code blocks for commands
+bash relax.sh
 ```
 
 ## Help
 
 Any advise for common problems or issues.
-```
+<!--
 command to run if program contains helper info
-```
+-->
 
 ## Authors
 
 Contributors names and contact info
 
 ex. Quazi Shafayat 
-#ex. [@DomPizzie](https://twitter.com/dompizzie)
-
+<!--
+ex. [@DomPizzie](https://twitter.com/dompizzie)
+-->
 
 
 ## Acknowledgments and References
-
+<!--
 Inspiration, code snippets, etc.
-#* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-#* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-#* [dbader](https://github.com/dbader/readme-template)
-#* [zenorocha](https://gist.github.com/zenorocha/4526327)
-#* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+* [awesome-readme](https://github.com/matiassingers/awesome-readme)
+* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
+* [dbader](https://github.com/dbader/readme-template)
+* [zenorocha](https://gist.github.com/zenorocha/4526327)
+* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+-->
