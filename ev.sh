@@ -40,9 +40,11 @@ nohup mpirun -np 80 vasp
 
 # Gather energy and volume data from the VASP outputs
 # Store the data in "EvsV" text files
-V=`grep 'volume of cell' OUTCAR | awk '{print $5}' | head -n 1`
+VV=`grep 'volume of cell' OUTCAR | awk '{print $5}' | head -n 1`
+V=`grep volume/ion OUTCAR| awk '{print $5}'`
 E=`grep 'free  energy   TOTEN  =' OUTCAR | awk '{print $5}'`
 echo $V $E >> EvsV
+echo $VV $E >> Energy-Volume.txt
 
 # Clean up VASP files
 rm OUTCAR OSZICAR
