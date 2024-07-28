@@ -1,18 +1,18 @@
 #!/bin/bash
-### starting interface ###
-echo "--------------------------------------------------------------------------------"
 
-### Setting VASP parameters ###
-cp INCAR INCAR.r
-echo  -e  "101\nST\n"  |  vaspkit
-cp INCAR INCAR.st
-sed -i '1,21d' INCAR
-cp INCAR INCAR.temp
-sed -n '1,13p' INCAR.r > INCAR
-sed -n '1,7p' INCAR.temp >> INCAR
+### IMPORTANT ###
+# Edit as required
 
-# #### Runing VASP ####
-nohup mpirun -np $np vasp
+### INSTRUCTIONS ###
+# This script makes new directory "optical" and runs optical calculation
+# Run this script using: bash optical.sh
+
+echo "-----------------------------------------------------------------------------------------------"
+
+cd ..
+mkdir optical
+cd optical
+cp -r ../dos/* ./
 
 nb=$(grep "number of bands    NBANDS" OUTCAR | awk -F "=" '{print $4}')
 mm=$(grep "MAGMOM" INCAR.r | awk -F "=" '{print $2}')
@@ -34,7 +34,7 @@ sed -i "2 i $string" INCAR
 sed -i "2 i ISPIN = 2" INCAR
 
 # #### Runing VASP ####
-# nohup mpirun -np $np vasp
+# nohup mpirun -np 80 vasp
 
 # echo  -e  "711\n1\n"  |  vaspkit
 
