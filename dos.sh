@@ -10,20 +10,21 @@
 
 echo "-----------------------------------------------------------------------------------------------"
 
-cd ..
-mkdir dos
-cd dos
-cp -r ../relax/* ./
+cd .. #Go to upper directory
+mkdir dos #Make new directory 'dos'
+cd dos #Enter directory 'dos'
+cp -r ../relax/* ./ #Copy all files from 'relax' directory into current directory
 
 ### Creating INCAR File ###
-cp INCAR INCAR.r
-echo  -e  "101\nST\n"  |  vaspkit > vaspkit.txt
-cp INCAR INCAR.st
+cp INCAR INCAR.r #Copy INCAR as INCAR.r for backup
+echo  -e  "101\nST\n"  |  vaspkit > vaspkit.txt #Generate new INCAR using vaspkit
+cp INCAR INCAR.st #Copy INCAR as INCAR.st for backup
 
 line1=$(sed -n '/^$/=' INCAR.r | head -n 1) && echo $line1
 line2=$(sed -n '/^$/=' INCAR.st | head -n 1) && echo $line2
 sed -n '1,/^$/p' INCAR.r > INCAR
 sed -n "$((line2 + 1)),\$p" INCAR.st >> INCAR
+cp INCAR INCAR.st
 
 #### Runing VASP ####
 nohup mpirun -np 80 vasp
@@ -43,6 +44,7 @@ for element in $elements; do
 done
 rm -f PDOS_USER.dat
 
+#Plot DOS
 cp ~/bash/dosplot.py ./
 python dosplot.py
 
