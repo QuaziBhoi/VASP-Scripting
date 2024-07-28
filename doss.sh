@@ -31,13 +31,17 @@ nohup mpirun -np 80 vasp
 #### Generate DOS data ####
 echo  -e  "111\n1\n"  |  vaspkit
 
-echo  -e  "115\nBi\ns\nBi\np\nBi\nd\n"  |  vaspkit
-cp PDOS_USER.dat Bi.dat
-echo  -e  "115\nCr\ns\nCr\np\nCr\nd\n"  |  vaspkit
-cp PDOS_USER.dat Cr.dat
-echo  -e  "115\nO\ns\nO\np\n"  |  vaspkit
-cp PDOS_USER.dat O.dat
-rm PDOS_USER.dat
+elements=$(awk 'NR==6 {for (i=1; i<=NF; i++) print $i}' POSCAR | sort | uniq)
+# Loop through each element
+for element in $elements; do
+    echo -e "115\n${element}\ns\n${element}\np\n${element}\nd\n" | vaspkit
+    if [ -f PDOS_USER.dat ]; then
+        cp PDOS_USER.dat "${element}.dat"
+    else
+        echo "PDOS_USER.dat not found for ${element}!"
+    fi
+done
+rm -f PDOS_USER.dat
 
 cp ~/bash/dosplot.py ./
 python dosplot.py
