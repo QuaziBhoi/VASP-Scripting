@@ -1,14 +1,19 @@
 #!/bin/bash
-### starting interface ###
+
+### IMPORTANT ###
+# Edit as required
+
+### INSTRUCTIONS ###
+# This script makes new directory "phonon" and runs phonon calculation and data extraction
+# Run this script using: bash phonon.sh
+# # You can edit MAGMOM as required by manually editing i n this script
+
 echo "-----------------------------------------------------------------------------------------------"
 
-echo "Please make sure there are only 'POSCAR' and the 'phonon.sh' files in this working directory"
-# Check if POSCAR file exists
-if [[ ! -f "POSCAR" ]]; then
-  echo "POSCAR file not found!"
-  exit 1
-fi
-
+cd .. #Go to upper directory
+mkdir phonon #Make new directory 'bs'
+cd phonon #Enter directory 'bs'
+cp ../relax/POSCAR ./ #Copy POSCAR from 'relax' directory into current directory
 
 ### Calling phonopy to construct cells ###
 cp POSCAR POSCAR-unitcell
