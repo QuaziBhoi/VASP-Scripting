@@ -6,24 +6,26 @@
 ### INSTRUCTIONS ###
 # This script makes new directory "bs" and runs band structure calculation and data extraction
 # Run this script using: bash band.sh
-# You can edit K=Path as required by manually editing
+# You can edit k-path as required by manually editing
 
 echo "-----------------------------------------------------------------------------------------------"
 
-cd ..
-mkdir bs
-cd bs
-cp -r ../dos/* ./
+cd .. #Go to upper directory
+mkdir bs #Make new directory 'bs'
+cd bs #Enter directory 'bs'
+cp -r ../dos/* ./ #Copy all files from 'dos' directory into current directory
 
-cp INCAR INCAR.st
-sed -i '5 i ICHARG = 11' INCAR
+cp INCAR INCAR.st #Copy INCAR as INCAR.st for backup
+sed -i '5 i ICHARG = 11' INCAR #Insert ICHARG tag into INCAR
 
 #### Runing VASP ####
 nohup mpirun -np 80 vasp
 
-echo  -e  "303\n"  |  vaspkit > vaspkit.txt
-cp KPOINTS KPOINTS.r
-cp KPATH.in KPOINTS
+echo  -e  "303\n"  |  vaspkit > vaspkit.txt #Call vaspkit for auto generated k-path
+cp KPOINTS KPOINTS.r #Copy KPOINTS as KPOINTS.r for backup
+cp KPATH.in KPOINTS #Copy KPATH as KPOINTS for simulation
 
+#### Runing VASP ####
 nohup mpirun -np 80 vasp
-echo  -e  "211\n1\n"  |  vaspkit > vaspkit.txt
+
+echo  -e  "211\n1\n"  |  vaspkit > vaspkit.txt #Extract band structure data
