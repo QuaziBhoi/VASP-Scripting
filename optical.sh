@@ -13,29 +13,23 @@ cd ..
 mkdir optical
 cd optical
 cp -r ../dos/* ./
+cp INCAR INCAR.st
 
-nb=$(grep "number of bands    NBANDS" OUTCAR | awk -F "=" '{print $4}')
 mm=$(grep "MAGMOM" INCAR.r | awk -F "=" '{print $2}')
-echo $nb
-nbb=$((3*$nb))
-echo $nbb
+nb=$((3*$(grep "number of bands    NBANDS" OUTCAR | awk -F "=" '{print $4}')))
 
-echo $mm
-string="MAGMOM = $mm"
-strig="NBANDS = $nbb"
-echo $string
-echo $strig
+mm_string="MAGMOM = $mm"
+nb_string="NBANDS = $nb"
 
-echo  -e  "101\nOP\n"  |  vaspkit > foo.txt
-sed -i '3d' INCAR
+echo  -e  "101\nOP\n"  |  vaspkit > vaspkit.txt
+sed -i '/NBANDS/d' INCAR #Delete pre-existing NBANDS tag in INCAR
 
-sed -i "2 i $strig" INCAR
-sed -i "2 i $string" INCAR
-sed -i "2 i ISPIN = 2" INCAR
+sed -i "2 i $nb_string" INCAR #Insert NBANDS into INCAR
+sed -i "2 i $mm_string" INCAR #Insert MAGMOM into INCAR
+sed -i "2 i ISPIN = 2" INCAR #Insert ISPIN into INCAR
 
-# #### Runing VASP ####
-# nohup mpirun -np 80 vasp
+### Runing VASP ####
+nohup mpirun -np 80 vasp
 
-# echo  -e  "711\n1\n"  |  vaspkit
+echo  -e  "711\n1\n"  |  vaspkit > vaspkit.txt
 
-echo " Thanks for using the script. For any queries please contact 'Quazi Shafayat Hossain' "
