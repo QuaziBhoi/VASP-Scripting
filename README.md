@@ -7,7 +7,7 @@ Bash scripting to automate VASP routines.
 ### Downloading
 
 * Create your working directory. Keep only POSCAR inside working directory 
-* Download all the scripts into your working directory under new folder "scripts"
+* Download all the scripts into your working directory under new folder "_scripts"
 * Instructions for the script are written inside the script itself at the top
 
 ### Executing program
