@@ -10,15 +10,18 @@
 
 echo "-----------------------------------------------------------------------------------------------"
 
-cd..
-mkdir relax
-cd relax
-mv ../POSCAR ./
+cd ..
+
 # Check if POSCAR file exists
 if [[ ! -f "POSCAR" ]]; then
   echo "POSCAR file not found!"
   exit 1
 fi 
+
+mkdir relax
+cd relax
+mv ../POSCAR ./
+
 
 ### Setting VASP parameters ###
 echo  -e  "102\n1\n0.02\n"  |  vaspkit > vaspkit.txt
@@ -39,13 +42,13 @@ ISTART =  1            (Read existing wavefunction; if there)
 ISPIN  =  2            (Non-Spin polarised DFT)
 MAGMOM =  $MAGMOM      (Initial magnetic momentum)
 LREAL  = .FALSE.       (Projection operators: automatic)
-ENCUT  =  500          (Cut-off energy for plane wave basis set, in eV)
+ENCUT  =  520          (Cut-off energy for plane wave basis set, in eV)
 PREC   =  A            (Precision level)
 LWAVE  = .TRUE.        (Write WAVECAR or not)
 LCHARG = .TRUE.        (Write CHGCAR or not)
 ADDGRID= .TRUE.        (Increase grid; helps GGA convergence)
-KPAR   = $(($np/4))    (Divides k-grid into separate groups)
-NCORE  = 8
+KPAR   = 5             (Divides k-grid into separate groups)
+NCORE  = 4
  
 Electronic Relaxation
 ISMEAR =  0            (Gaussian smearing; metals:1)
@@ -65,7 +68,7 @@ EDIFFG = -0.0001       (Ionic convergence; eV/AA)
 while true; do
 
     #### Runing VASP ####
-    nohup mpirun -np 80 vasp
+    nohup mpirun -np 20 vasp
 
     cp POSCAR POSCAR.old
     cp CONTCAR POSCAR
