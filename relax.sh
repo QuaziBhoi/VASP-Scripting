@@ -49,14 +49,14 @@ LCHARG = .TRUE.        (Write CHGCAR or not)
 ADDGRID= .TRUE.        (Increase grid; helps GGA convergence)
 KPAR   = 5             (Divides k-grid into separate groups)
 NCORE  = 4
- 
+
 Electronic Relaxation
 ISMEAR =  0            (Gaussian smearing; metals:1)
 SIGMA  =  0.05         (Smearing value in eV; metals:0.2)
 NELM   =  90           (Max electronic SCF steps)
 NELMIN =  6            (Min electronic SCF steps)
 EDIFF  =  1E-08        (SCF energy convergence; in eV)
- 
+
 Ionic Relaxation
 NSW    =  100          (Max ionic steps)
 IBRION =  2            (Algorithm: 0-MD; 1-Quasi-New; 2-CG)
