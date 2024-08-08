@@ -21,6 +21,7 @@ fi
 mkdir relax
 cd relax
 mv ../POSCAR ./
+cp ../../5/relax/* ./
 
 
 ### Setting VASP parameters ###
@@ -49,6 +50,16 @@ LCHARG = .TRUE.        (Write CHGCAR or not)
 ADDGRID= .TRUE.        (Increase grid; helps GGA convergence)
 KPAR   = 5             (Divides k-grid into separate groups)
 NCORE  = 4
+#IVDW   = 12
+#DFT+U Calculation
+#LDAU    = .TRUE.        (Activate DFT+U)
+#LDAUTYPE=  2            (Dudarev, only U-J matters)
+#LDAUL   =  -1  2  -1         (Orbitals for each species)
+#LDAUU   =  0  6  0         (U for each species)
+#LDAUJ   =  0  0  0         (J for each species)
+#LMAXMIX =  4            (Mixing cut-off, 4-d, 6-f)
+#GGA = PS 
+#GGA = CA
 
 Electronic Relaxation
 ISMEAR =  0            (Gaussian smearing; metals:1)
@@ -68,7 +79,7 @@ EDIFFG = -0.0001       (Ionic convergence; eV/AA)
 while true; do
 
     #### Runing VASP ####
-    nohup mpirun -np 20 vasp
+    nohup mpirun -np 20 vasp_std
 
     cp POSCAR POSCAR.old
     cp CONTCAR POSCAR
@@ -80,5 +91,12 @@ while true; do
     fi
     
     # Add a delay before the next iteration (optional)
-    sleep 60  # Adjust the sleep duration as needed
+    sleep 10  # Adjust the sleep duration as needed
 done                        
+sed -i '/IBRION/c\IBRION =  1' INCAR
+nohup mpirun -np 20 vasp_std
+cp POSCAR POSCAR.old
+cp CONTCAR POSCAR
+cp INCAR INCAR.r
+
+cd ../_scripts
