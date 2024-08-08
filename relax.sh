@@ -36,6 +36,14 @@ done
 MAGMOM=${MAGMOM% }  # Remove trailing space
 echo $MAGMOM
 
+np=$(grep -c ^processor /proc/cpuinfo)
+nc=$(echo "scale=0; sqrt($np)" | bc)
+if [ "$nc" -ge 4 ]; then
+    ncc=$nc
+else
+    ncc=4
+fi
+
 ### Create INCAR ###
 cat >INCAR <<!
 Global Parameters
@@ -48,8 +56,8 @@ PREC   =  A            (Precision level)
 LWAVE  = .TRUE.        (Write WAVECAR or not)
 LCHARG = .TRUE.        (Write CHGCAR or not)
 ADDGRID= .TRUE.        (Increase grid; helps GGA convergence)
-KPAR   = 5             (Divides k-grid into separate groups)
-NCORE  = 4
+KPAR   = $(($np / $ncc))             (Divides k-grid into separate groups)
+NCORE  = $ncc
 #IVDW   = 12
 #DFT+U Calculation
 #LDAU    = .TRUE.        (Activate DFT+U)
@@ -79,7 +87,7 @@ EDIFFG = -0.0001       (Ionic convergence; eV/AA)
 while true; do
 
     #### Runing VASP ####
-    nohup mpirun -np 20 vasp_std
+    nohup mpirun -np $np vasp
 
     cp POSCAR POSCAR.old
     cp CONTCAR POSCAR
@@ -94,7 +102,7 @@ while true; do
     sleep 10  # Adjust the sleep duration as needed
 done                        
 sed -i '/IBRION/c\IBRION =  1' INCAR
-nohup mpirun -np 20 vasp_std
+nohup mpirun -np $np vasp
 cp POSCAR POSCAR.old
 cp CONTCAR POSCAR
 cp INCAR INCAR.r
