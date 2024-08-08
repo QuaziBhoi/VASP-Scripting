@@ -20,14 +20,20 @@ cp INCAR INCAR.r #Copy INCAR as INCAR.r for backup
 echo  -e  "101\nST\n"  |  vaspkit > vaspkit.txt #Generate new INCAR using vaspkit
 cp INCAR INCAR.st #Copy INCAR as INCAR.st for backup
 
-line1=$(sed -n '/^$/=' INCAR.r | head -n 1) && echo $line1
-line2=$(sed -n '/^$/=' INCAR.st | head -n 1) && echo $line2
 sed -n '1,/^$/p' INCAR.r > INCAR
-sed -n "$((line2 + 1)),\$p" INCAR.st >> INCAR
-cp INCAR INCAR.st
+#cp INCAR INCAR.st
+cat <<EOF >> INCAR
+Static Calculation
+ISMEAR =  0            (gaussian smearing method)
+SIGMA  =  0.05         (please check the width of the smearing)
+LORBIT =  11           (PAW radii for projected DOS)
+NEDOS  =  2001         (DOSCAR points)
+NELM   =  60           (Max electronic SCF steps)
+EDIFF  =  1E-08        (SCF energy convergence, in eV)
+EOF
 
 #### Runing VASP ####
-nohup mpirun -np 80 vasp
+nohup mpirun -np 20 vasp_std
 
 #### Generate DOS data ####
 echo  -e  "111\n1\n"  |  vaspkit
@@ -44,9 +50,4 @@ for element in $elements; do
 done
 rm -f PDOS_USER.dat
 
-#Plot DOS
-cp ~/bash/dosplot.py ./
-python dosplot.py
-
-
-
+cd ../_scripts
