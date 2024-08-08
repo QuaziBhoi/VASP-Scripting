@@ -19,13 +19,14 @@ cp INCAR INCAR.st #Copy INCAR as INCAR.st for backup
 sed -i '5 i ICHARG = 11' INCAR #Insert ICHARG tag into INCAR
 
 #### Runing VASP ####
-nohup mpirun -np 80 vasp
+nohup mpirun -np 20 vasp_std
 
 echo  -e  "303\n"  |  vaspkit > vaspkit.txt #Call vaspkit for auto generated k-path
 cp KPOINTS KPOINTS.r #Copy KPOINTS as KPOINTS.r for backup
 cp KPATH.in KPOINTS #Copy KPATH as KPOINTS for simulation
 
 #### Runing VASP ####
-nohup mpirun -np 80 vasp
+nohup mpirun -np 20 vasp_std
 
 echo  -e  "211\n1\n"  |  vaspkit > vaspkit.txt #Extract band structure data
+cd ../_scripts
