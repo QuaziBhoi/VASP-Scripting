@@ -33,7 +33,7 @@ EDIFF  =  1E-08        (SCF energy convergence, in eV)
 EOF
 
 #### Runing VASP ####
-nohup mpirun -np 20 vasp_std
+nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 
 #### Generate DOS data ####
 echo  -e  "111\n1\n"  |  vaspkit
