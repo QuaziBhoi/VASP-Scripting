@@ -59,12 +59,11 @@ ADDGRID= .TRUE.        (Increase grid; helps GGA convergence)
 KPAR   = $(($np / $ncc))             (Divides k-grid into separate groups)
 NCORE  = $ncc
 #IVDW   = 12
-#DFT+U Calculation
 #LDAU    = .TRUE.        (Activate DFT+U)
 #LDAUTYPE=  2            (Dudarev, only U-J matters)
-#LDAUL   =  -1  2  -1         (Orbitals for each species)
-#LDAUU   =  0  6  0         (U for each species)
-#LDAUJ   =  0  0  0         (J for each species)
+#LDAUL   =  -1  2  -1    (Orbitals for each species)
+#LDAUU   =  0  6  0      (U for each species)
+#LDAUJ   =  0  0  0      (J for each species)
 #LMAXMIX =  4            (Mixing cut-off, 4-d, 6-f)
 #GGA = PS 
 #GGA = CA
