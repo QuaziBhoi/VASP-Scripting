@@ -57,7 +57,9 @@ VV=`grep 'volume of cell' OUTCAR | awk '{print $5}' | head -n 1`
 V=`grep volume/ion OUTCAR| awk '{print $5}'`
 E=`grep 'free  energy   TOTEN  =' OUTCAR | awk '{print $5}'`
 echo $V $E >> EvsV
-echo $VV $E >> Energy-Volume.txt
+echo $VV $E >> Energy-Volume.txt 
+
+python ../_scripts/evfit.py
 
 # Clean up VASP files
 rm OUTCAR OSZICAR
