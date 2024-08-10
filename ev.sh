@@ -59,10 +59,13 @@ E=`grep 'free  energy   TOTEN  =' OUTCAR | awk '{print $5}'`
 echo $V $E >> EvsV
 echo $VV $E >> Energy-Volume.txt 
 
-python ../_scripts/evfit.py
 
 # Clean up VASP files
 rm OUTCAR OSZICAR
 
 # Restart
   done
+
+
+python ../_scripts/evfit.py
+
