@@ -1,8 +1,21 @@
 #!/bin/bash
 
+### IMPORTANT ###
+# Edit as required - number of cores(80), ENCUT(500), MAGMOM(0), KPOINTS etc.
+
+### INSTRUCTIONS ###
+# This script makes new directory "relax" and runs structural relaxation
+# Run this script using: bash relax.sh
+# You can edit INCAR and KPOINTS as required inside the script by manually editing
+
+echo "-----------------------------------------------------------------------------------------------"
+
+cd ..
 #Copy input files from static caluculation folder
 
-cp ../dos/{POSCAR,WAVECAR,INCAR,POTCAR,KPOINTS} ../ev/ 
+mkdir ev
+cd ev
+cp ../dos/{POSCAR,WAVECAR,INCAR,POTCAR,KPOINTS} ./ 
 cp POSCAR POSCAR.r
 sed -i '/LWAVE/c\LWAVE = .FALSE.' INCAR
 
