@@ -21,8 +21,6 @@ fi
 mkdir relax
 cd relax
 mv ../POSCAR ./
-cp ../../5/relax/* ./
-
 
 ### Setting VASP parameters ###
 echo  -e  "102\n1\n0.02\n"  |  vaspkit > vaspkit.txt
