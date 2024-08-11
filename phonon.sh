@@ -22,7 +22,7 @@ cp SPOSCAR POSCAR
 
 ### Setting VASP parameters ###
 echo  -e  "102\n2\n0.03\n"  |  vaspkit
-read -p 'Number of processing core of your system: ' np
+np=$(grep -c ^processor /proc/cpuinfo)
 
 ### Setting MAGMOM to 0 for all atoms ### You can edit MAGMOM as required 
 IFS=' ' read -r -a counts <<< "$(sed -n '7p' POSCAR)"
@@ -53,7 +53,7 @@ ISPIN = 2
 MAGMOM =  $MAGMOM 
 !
 #### Runing VASP ####
-mpirun -np $np vasp
+nohup mpirun -np $np vasp
 
 #### Runing VASP for NAC(non-analytical correction) ####
 mkdir nac
@@ -79,7 +79,7 @@ NSIM  = 8
 ISPIN = 2
 MAGMOM =  $MAGMOM 
 !
-mpirun -np $np vasp
+nohup mpirun -np $np vasp
 phonopy-vasp-born > BORN1
 cp BORN1 BORN_Data
 sed '/#/ c 14.399652' BORN1 > BORN
