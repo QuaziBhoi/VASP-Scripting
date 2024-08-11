@@ -22,6 +22,7 @@ mkdir relax
 cd relax
 mv ../POSCAR ./
 
+
 ### Setting VASP parameters ###
 echo  -e  "102\n1\n0.02\n"  |  vaspkit > vaspkit.txt
 
@@ -97,7 +98,8 @@ while true; do
     
     # Add a delay before the next iteration (optional)
     sleep 10  # Adjust the sleep duration as needed
-done                        
+done    
+                    
 sed -i '/IBRION/c\IBRION =  1' INCAR
 nohup mpirun -np $np vasp
 cp POSCAR POSCAR.old
