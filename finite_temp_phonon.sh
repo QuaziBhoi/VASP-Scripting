@@ -10,6 +10,9 @@
 echo "-----------------------------------------------------------------------------------------------"
 
 cd .. #Go to upper directory
-mkdir ftp #Make new directory 'bs'
-cd ftp #Enter directory 'bs'
-cp -r ../dos/* ./ #Copy all files from 'dos' directory into current directory
+mkdir alamode #Make new directory 'bs'
+cd alamode #Enter directory 'bs'
+mkdir 0_harmonic
+cd 0_harmonic
+cp  ../../relax/* ./ #Copy all files from 'dos' directory into current directory
+
