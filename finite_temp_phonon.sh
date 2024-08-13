@@ -9,12 +9,12 @@
 
 echo "-----------------------------------------------------------------------------------------------"
 
-cd .. #Go to upper directory
-mkdir alamode #Make new directory 'bs'
-cd alamode #Enter directory 'bs'
-mkdir 0_harmonic
-cd 0_harmonic
-cp  ../../relax/POSCAR ./ #Copy all files from 'dos' directory into current directory
+# cd .. #Go to upper directory
+# mkdir alamode #Make new directory 'bs'
+# cd alamode #Enter directory 'bs'
+# mkdir 0_harmonic
+# cd 0_harmonic
+# cp  ../../relax/POSCAR ./ #Copy all files from 'dos' directory into current directory
 
 total_atoms=$(awk 'NR==7 {sum=0; for(i=1;i<=NF;i++) sum+=$i; print sum}' POSCAR)
 num_elements=$(awk 'NR==6 {print NF}' POSCAR)
@@ -34,7 +34,6 @@ counts=($(awk 'NR==7 {for(i=1;i<=NF;i++) print $i}' POSCAR))
 current_element=1 # Initialize a variable to track the current element index
 position_counter=0 # Initialize a variable to keep track of the current count of positions
 last_line=$((9 + total_atoms - 1)) # Calculate the last line number for position data
-output="Position Data with Element Index:\n" # Initialize a variable to store the output
 while IFS= read -r line; do # Increment the position counter
     position_counter=$((position_counter + 1)) # Increment the position counter
     # Check if we need to move to the next element
@@ -46,14 +45,14 @@ while IFS= read -r line; do # Increment the position counter
     output+="$current_element $line\n"
 done < <(awk "NR>=9 && NR<=$last_line" POSCAR)
 output=${output%\\n} # Remove the trailing newline character
-echo -e "$output" # Print the output variable
 
 ### Create INCAR ###
 cat >alm.in1 <<!
+&general
   PREFIX = output
   MODE = suggest
   NAT = $total_atoms; NKD = $num_elements
-  KD = $elements
+  KD = $(awk 'NR==6 {for(i=1;i<=NF;i++) printf "%s%s", $i, (i<NF ? " " : "")}' POSCAR)
 /
 
 &interaction
@@ -62,7 +61,7 @@ cat >alm.in1 <<!
 
 &cell
   1.88973 # factor in Bohr unit
-  %a $b $c 
+  $a $b $c 
   $d $e $f 
   $g $h $i 
 /
@@ -72,6 +71,12 @@ cat >alm.in1 <<!
 /
 
 &position
-$output
-/
 !
+
+{
+    echo -e "$output"
+} >>alm.in1
+
+{
+    echo /
+} >>alm.in1
