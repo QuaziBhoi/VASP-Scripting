@@ -9,12 +9,12 @@
 
 echo "-----------------------------------------------------------------------------------------------"
 
-# cd .. #Go to upper directory
-# mkdir alamode #Make new directory 'bs'
-# cd alamode #Enter directory 'bs'
-# mkdir 0_harmonic
-# cd 0_harmonic
-# cp  ../../relax/POSCAR ./ #Copy all files from 'dos' directory into current directory
+cd .. #Go to upper directory
+mkdir alamode #Make new directory 'bs'
+cd alamode #Enter directory 'bs'
+mkdir 0_harmonic
+cd 0_harmonic
+cp  ../../relax/POSCAR ./ #Copy all files from 'dos' directory into current directory
 
 total_atoms=$(awk 'NR==7 {sum=0; for(i=1;i<=NF;i++) sum+=$i; print sum}' POSCAR)
 num_elements=$(awk 'NR==6 {print NF}' POSCAR)
@@ -24,7 +24,6 @@ elements=$(awk 'NR==6 {for(i=1;i<=NF;i++) printf "%s%s", $i, (i<NF ? " " : "")}'
 read -r a b c < <(sed -n '3p' POSCAR)
 read -r d e f < <(sed -n '4p' POSCAR)
 read -r g h i < <(sed -n '5p' POSCAR)
-
 
 total_atoms=$(awk 'NR==7 {sum=0; for(i=1;i<=NF;i++) sum+=$i; print sum}' POSCAR) # Extract the total number of atoms from line 7
 
