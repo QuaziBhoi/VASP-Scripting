@@ -177,3 +177,6 @@ done
 {
     echo /
 } >> phband.in
+
+###Anharmonic Force
+
