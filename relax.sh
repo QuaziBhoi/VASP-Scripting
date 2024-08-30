@@ -21,7 +21,7 @@ fi
 mkdir relax
 cd relax
 mv ../POSCAR ./
-
+dos2unix POSCAR
 
 ### Setting VASP parameters ###
 echo  -e  "102\n1\n0.02\n"  |  vaspkit > vaspkit.txt
@@ -80,6 +80,14 @@ IBRION =  2            (Algorithm: 0-MD; 1-Quasi-New; 2-CG)
 ISIF   =  3            (Stress/relaxation: 2-Ions, 3-Shape/Ions/V, 4-Shape/Ions)
 EDIFFG = -0.0001       (Ionic convergence; eV/AA)
 !
+
+echo "Please check the INCAR file for any errors or edits. Press any key except ENTER to open the file or wait 5 seconds to proceed automatically."
+read -t 5 -n 1 user_input
+if [ -n "$user_input" ]; then
+  nano INCAR
+else
+  echo "No input received. Proceeding with the script."
+fi
 
 ### Run VASP until reaching required accuracy ###
 while true; do
