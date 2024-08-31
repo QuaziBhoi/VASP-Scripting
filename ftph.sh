@@ -4,8 +4,8 @@
 # Edit as required
 
 ### INSTRUCTIONS ###
-# This script makes new directory "ftp" and runs finite temperature phonon calculation and data extraction
-# Run this script using: bash finite_temp_phonon.sh
+# This script makes new directory "alamode" and runs finite temperature harmonic phonon calculation and data extraction
+# Run this script using: bash ftph.sh
 
 echo "-----------------------------------------------------------------------------------------------"
 
@@ -14,17 +14,16 @@ mkdir alamode #Make new directory 'bs'
 cd alamode #Enter directory 'bs'
 mkdir 0_harmonic
 cd 0_harmonic
-cp  ../../relax/POSCAR ./ #Copy all files from 'dos' directory into current directory
+cp  ../../relax/SPOSCAR ./POSCAR #Copy all files from 'dos' directory into current directory
 
 total_atoms=$(awk 'NR==7 {sum=0; for(i=1;i<=NF;i++) sum+=$i; print sum}' POSCAR)
 num_elements=$(awk 'NR==6 {print NF}' POSCAR)
-elements=$(awk 'NR==6 {for(i=1;i<=NF;i++) printf "%s%s", $i, (i<NF ? " " : "")}' POSCAR)
+elementss=$(awk 'NR==6 {for(i=1;i<=NF;i++) printf "%s%s", $i, (i<NF ? " " : "")}' POSCAR)
 
 # Reading values from POSCAR file
 read -r a b c < <(sed -n '3p' POSCAR)
 read -r d e f < <(sed -n '4p' POSCAR)
 read -r g h i < <(sed -n '5p' POSCAR)
-
 total_atoms=$(awk 'NR==7 {sum=0; for(i=1;i<=NF;i++) sum+=$i; print sum}' POSCAR) # Extract the total number of atoms from line 7
 
 # Extract the elements and their counts from lines 6 and 7
@@ -50,7 +49,7 @@ cat >alm.in1 <<!
   PREFIX = output
   MODE = suggest
   NAT = $total_atoms; NKD = $num_elements
-  KD = $(awk 'NR==6 {for(i=1;i<=NF;i++) printf "%s%s", $i, (i<NF ? " " : "")}' POSCAR)
+  KD = $elementss
 /
 
 &interaction
@@ -58,7 +57,7 @@ cat >alm.in1 <<!
 /
 
 &cell
-  1.88973 # factor in Bohr unit
+  1.88973 # factor in Bohr unit (Angstrom to Bohr conversion)
   $a $b $c 
   $d $e $f 
   $g $h $i 
@@ -83,10 +82,31 @@ alm alm.in1 > alm.log1
 
 python ~/alamode/tools/displace.py --VASP=POSCAR --mag=0.01 -pf output.pattern_HARMONIC
 
+echo  -e  "102\n1\n0.03\n"  |  vaspkit > vaspkit.txt
+### Create INCAR ###
+cat >INCAR <<!
+general:
+ System = output
+ LREAL = .False.
+ ENCUT  = 400
+ ISMEAR = 0
+ SIGMA = 0.05
+ EDIFF = 1.0E-8
+ PREC = Accurate
+ ADDGRID = .True.
+ LSCALAPACK = .TRUE.
+ ALGO = Normal
+ NPAR = 10
+ NCORE = 8
+ LWAVE = .False.
+ LCHARG = .False.
+ ISIF = 3 # calculate stress tensor
+!
+
 num_files=$(ls disp*.POSCAR 2>/dev/null | wc -l) 
-for ((i=1; i<=$num_files; i++))
+for ((itt=1; itt<=$num_files; itt++))
 do
-    num=$(printf "%02d" $i)
+    num=$(printf "%02d" $itt)
     mkdir ${num}
     cd ${num}
     cp ../disp${num}.POSCAR POSCAR
@@ -131,25 +151,20 @@ cat >phband.in <<!
   1  # KPMODE = 1: line mode
 !
 
-#!/bin/bash
+echo  -e  "305\n"  |  vaspkit > vaspkit.txt
 
 # Extract NPOINTS
 npoints=$(grep "NPOINTS" KPATH.phonopy | awk '{print $3}')
-
 # Extract BAND coordinates
 band_coordinates=$(grep "BAND =" KPATH.phonopy | sed 's/BAND = //; s/,/ /g')
-
 # Extract BAND labels
 band_labels=$(grep "BAND_LABELS =" KPATH.phonopy | sed 's/BAND_LABELS = //; s/\$//g; s/\$//g')
-
 # Convert the BAND coordinates into an array
 read -a coords <<< "$band_coordinates"
 # Convert the BAND labels into an array
 read -a labels <<< "$band_labels"
-
 # Initialize an empty array for the formatted K-path
 kpath=()
-
 # Loop through the coordinates and labels to format the K-path
 for ((i=0; i<${#labels[@]}-1; i++)); do
     # Get the current and next label
@@ -168,15 +183,14 @@ for ((i=0; i<${#labels[@]}-1; i++)); do
     # Format the line and add it to the K-path array
     kpath+=("  $label1 $x1 $y1 $z1 $label2 $x2 $y2 $z2 $npoints")
 done
-
 # Append the formatted K-path to the file phband.in
 {
     printf "%s\n" "${kpath[@]}"
 } >> phband.in
-
 {
     echo /
 } >> phband.in
 
-###Anharmonic Force
+mpirun -np 80 anphon phband.in > phband.log
+
 
