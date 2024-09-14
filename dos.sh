@@ -17,8 +17,6 @@ cp -r ../relax/* ./ #Copy all files from 'relax' directory into current director
 
 ### Creating INCAR File ###
 cp INCAR INCAR.r #Copy INCAR as INCAR.r for backup
-echo  -e  "101\nST\n"  |  vaspkit > vaspkit.txt #Generate new INCAR using vaspkit
-cp INCAR INCAR.st #Copy INCAR as INCAR.st for backup
 
 sed -n '1,/^$/p' INCAR.r > INCAR
 #cp INCAR INCAR.st
