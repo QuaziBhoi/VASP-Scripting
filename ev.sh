@@ -49,7 +49,7 @@ sed -i "5s/.*/  $g_scaled $h_scaled $i_scaled/" POSCAR
 
 
 # Run VASP with the new POSCAR file
-nohup mpirun -np 80 vasp 
+nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 
 # Gather energy and volume data from the VASP outputs
 # Store the data in "EvsV" text files
