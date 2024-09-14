@@ -20,6 +20,6 @@ sed -i '/IBRION/c\IBRION =  6' INCAR #Change IBRION to 6
 sed -i 's/NCORE/#NCORE/g' INCAR #Turn off NCORE tag
 
 #### Runing VASP ####
-nohup mpirun -np 80 vasp
+nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 
 echo  -e  "203\n"  |  vaspkit  >> Elastic_Data.txt #Extract elastic data
