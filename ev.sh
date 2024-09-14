@@ -11,8 +11,8 @@
 echo "-----------------------------------------------------------------------------------------------"
 
 cd ..
-#Copy input files from static caluculation folder
 
+#Copy input files from static caluculation folder
 mkdir ev
 cd ev
 cp ../dos/{POSCAR,WAVECAR,INCAR,POTCAR,KPOINTS} ./ 
@@ -47,18 +47,14 @@ sed -i "3s/.*/  $a_scaled $b_scaled $c_scaled/" POSCAR
 sed -i "4s/.*/  $d_scaled $e_scaled $f_scaled/" POSCAR
 sed -i "5s/.*/  $g_scaled $h_scaled $i_scaled/" POSCAR
 
-
 # Run VASP with the new POSCAR file
 nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 
 # Gather energy and volume data from the VASP outputs
 # Store the data in "EvsV" text files
-VV=`grep 'volume of cell' OUTCAR | awk '{print $5}' | head -n 1`
-V=`grep volume/ion OUTCAR| awk '{print $5}'`
+V=`grep 'volume of cell' OUTCAR | awk '{print $5}' | head -n 1`
 E=`grep 'free  energy   TOTEN  =' OUTCAR | awk '{print $5}'`
 echo $V $E >> EvsV
-echo $VV $E >> Energy-Volume.txt 
-
 
 # Clean up VASP files
 rm OUTCAR OSZICAR
