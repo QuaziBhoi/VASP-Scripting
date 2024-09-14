@@ -81,7 +81,7 @@ ISIF   =  3            (Stress/relaxation: 2-Ions, 3-Shape/Ions/V, 4-Shape/Ions)
 EDIFFG = -0.0001       (Ionic convergence; eV/AA)
 !
 
-echo "To check the INCAR file for any errors or edits, press any key except ENTER; or press ENTER to move on."
+echo "To check/edit the INCAR file- press any key except ENTER; else press ENTER to move on."
 read -t 30 -n 1 user_input
 if [ -n "$user_input" ]; then
   nano INCAR
