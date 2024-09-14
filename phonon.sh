@@ -53,7 +53,7 @@ ISPIN = 2
 MAGMOM =  $MAGMOM 
 !
 #### Runing VASP ####
-nohup mpirun -np $np vasp
+nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 
 #### Runing VASP for NAC(non-analytical correction) ####
 mkdir nac
@@ -79,7 +79,7 @@ NSIM  = 8
 ISPIN = 2
 MAGMOM =  $MAGMOM 
 !
-nohup mpirun -np $np vasp
+nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 phonopy-vasp-born > BORN1
 cp BORN1 BORN_Data
 sed '/#/ c 14.399652' BORN1 > BORN
