@@ -93,7 +93,7 @@ fi
 while true; do
 
     #### Runing VASP ####
-    nohup mpirun -np $np vasp
+    nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 
     cp POSCAR POSCAR.old
     cp CONTCAR POSCAR
@@ -109,7 +109,7 @@ while true; do
 done    
                     
 sed -i '/IBRION/c\IBRION =  1' INCAR
-nohup mpirun -np $np vasp
+nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 cp POSCAR POSCAR.old
 cp CONTCAR POSCAR
 cp INCAR INCAR.r
