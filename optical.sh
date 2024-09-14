@@ -29,7 +29,7 @@ sed -i "2 i $mm_string" INCAR #Insert MAGMOM into INCAR
 sed -i "2 i ISPIN = 2" INCAR #Insert ISPIN into INCAR
 
 ### Runing VASP ####
-nohup mpirun -np 80 vasp
+nohup mpirun -np $(grep -c ^processor /proc/cpuinfo) vasp
 
 echo  -e  "711\n1\n"  |  vaspkit > vaspkit.txt
 
